@@ -6,13 +6,13 @@ end;
 local args_error = function(key)
 	ngx.say("Unsupported value on $GET["..key.."]: " .. args[key]);
 	ngx.say("");
-	ngx.say("Reference ".. url .. ngx.var.uri .. "?help");
+	ngx.say("Reference ".. ngx.var.scheme .. "://" .. ngx.var.host .. ngx.var.uri .. "?help");
 	ngx.exit(406);
 end;
 local set_args = function(eye, tongue, mode, cow)
 	local cow_args = "";
 	if not is(cow) then
-		if os.execute('test -f "'.. "/usr/share/cows/"..cow..".cow" ..'"') == 0 then
+		if indexOf(termcow.cows, cow) then
 			ngx.say("");
 			cow_args = cow_args .. " -f " .. "/usr/share/cows/" .. cow .. ".cow";
 		elseif cow == "random" then
@@ -56,7 +56,7 @@ local set_args = function(eye, tongue, mode, cow)
 	return cow_args;
 end;
 if args["help"] ~= nil then
-	require 'cowhelp'
+	require('cowhelp')()
 else
 	local handle = io.popen(
 		"cow" .. (ngx.var[1] == "random" and termcow.op[math.random(1,2)] or ngx.var[1] ) ..
