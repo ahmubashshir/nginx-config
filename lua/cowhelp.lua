@@ -43,6 +43,8 @@ function this()
 end
 if ngx.var.uri == '/cow' or ngx.var.uri == '/cow/' then
 	this()
-else
+elseif ngx.var.uri == '/cow/say' or ngx.var.uri == '/cow/think' or ngx.var.uri == '/cow/think' then
 	return this
+else
+	ngx.exit(404);
 end
