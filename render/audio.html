@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta content="width=device-width" name="viewport">
+	<script src="/static/js/misc.js" type="text/javascript"></script>
+	<script src="https://cdn.jsdelivr.net/npm/wavesurfer.js/dist/wavesurfer.min.js"></script>
+	<!--theme selector-->
+	<script src="https://stackpath.bootstrapcdn.com/bootlint/1.0.0/bootlint.min.js" integrity="sha384-N+BTm0BCfumqkjdZt552I0kBBcMzkYe8aWUaSqL13fGJEGVhOi0rljWKtlU6sC6Z" crossorigin="anonymous"></script>
+	<script type="text/javascript" async>
+		var themestyle = 'style-selector';
+		var bootswatchversion='4.4.1';
+		var themes = {
+			"dark": "https://stackpath.bootstrapcdn.com/bootswatch/" + bootswatchversion + "/darkly/bootstrap.min.css",
+			"light": "https://stackpath.bootstrapcdn.com/bootswatch/" + bootswatchversion + "/flatly/bootstrap.min.css"
+		};
+	</script>
+	<link rel="stylesheet" href="/static/css/theme-selector.css">
+	<script defer type="text/javascript" src="/static/js/theme-selector.js"></script>
+	<link id="style-selector" rel="stylesheet" href="">
+	<link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+	<!--theme selector-->
+	<script src="https://cdn.jsdelivr.net/npm/jsmediatags/dist/jsmediatags.min.js" type="text/javascript"></script>
+	<script src="https://cdn.jsdelivr.net/npm/wavesurfer.js/dist/plugin/wavesurfer.cursor.min.js" type="text/javascript"></script>
+	<link href="/static/css/patches.css" rel="stylesheet">
+	<style media="screen" type="text/css">
+	#waveform {
+		position: relative;
+		display: block;
+	}
+
+	#waveform .progress {
+		position: absolute;
+		z-index: 1;
+		top: 50%;
+		transform: translateY(-50%);
+	}
+
+	</style>
+	<title></title>
+	<style type="text/css">
+	div.content {
+		margin: auto;
+		width: 70%;
+		border-radius: 20px;
+		margin: 0;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		overflow: hidden;
+		transform: translate(-50%, -50%);
+	}
+
+	label#volume-label {
+		text-align: right;
+		width: 40px;
+	}
+
+	button.fa {
+		width: 64px;
+		text-align: center;
+	}
+
+	i#volume-view {
+		width: 15px;
+		text-align: left;
+		padding-left: 3px;
+	}
+
+	</style>
+</head>
+<body>
+	<label id="switch" class="switch">
+		<input type="checkbox" onchange="toggleTheme()" id="slider">
+		<span class="slider round"></span>
+	</label>
+	<div class="content jumbotron">
+		<div id="waveform"></div>
+		<script src="/render/audio.js" type="text/javascript"></script>
+		<div class="box">
+		<button class="buttonbox buttonbox-left fa fa-step-backward" onclick="wavesurfer.skipBackward()"></button> <button class="buttonbox fa fa-play" id="playPause" onclick="wavesurfer.playPause()"></button> <button class="buttonbox fa fa-step-forward" onclick="wavesurfer.skipForward()"></button> <button id="volume-toggle" class="buttonbox buttonbox-right fa fa-volume-off" onclick="wavesurfer.toggleMute()"></button>
+		</div>
+		<div class="box">
+		<input id="volume-slider" oninput="wavesurfer.setVolume((this.value*wavesurfer.scale)/100);" type="range"> <i class="fa fa-volume-off" id="volume-view"></i> <label id="volume-label"></label>
+		</div>
+		<div class="list-group" id="playlist">
+			<a class="d-flex justify-content-between align-items-center list-group-item active" href="../media/demo.wav">czskamaarù - Trou <span class="badge">0:21</span></a> <a class="list-group-item" href="../panner/media.wav">日本人の話し <span class="badge">1:04</span></a> <a class="list-group-item" href="../elan/transcripts/001z.mp3">Рассказы о сновидениях <span class="badge badge-info">1:26</span></a>
+		</div>
+	</div>
+</body>
+</html>
