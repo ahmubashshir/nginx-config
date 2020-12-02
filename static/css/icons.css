@@ -1485,6 +1485,8 @@
 .fa-file-movie-o:before,
 .fa-file-video-o:before,
 #list > tbody a[href$=".avi" i]:before,
+#list > tbody a[href$=".ts" i]:before,
+#list > tbody a[href$=".mpeg" i]:before,
 #list > tbody a[href$=".mp4" i]:before,
 #list > tbody a[href$=".mkv" i]:before,
 #list > tbody a[href$=".divx" i]:before,
@@ -2606,6 +2608,8 @@
 
 /* videos */
 #list > tbody a[href$=".avi" i]:before,
+#list > tbody a[href$=".ts" i]:before,
+#list > tbody a[href$=".mpeg" i]:before,
 #list > tbody a[href$=".mp4" i]:before,
 #list > tbody a[href$=".mkv" i]:before,
 #list > tbody a[href$=".divx" i]:before,
