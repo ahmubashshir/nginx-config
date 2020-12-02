@@ -1,31 +1,21 @@
 local args, err = ngx.req.get_uri_args();
 local url = ngx.var.scheme .. "://" .. ngx.var.host .. "/cow";
-local is = function(val)
-	return val == nil or val == '';
-end;
-local args_error = function(key)
-	ngx.say("Unsupported value on $GET["..key.."]: " .. args[key]);
-	ngx.say("");
-	ngx.say("Reference ".. ngx.var.scheme .. "://" .. ngx.var.host .. ngx.var.uri .. "?help");
-	ngx.exit(406);
-end;
 local set_args = function(eye, tongue, mode, cow)
 	local cow_args = "";
-	if not is(cow) then
-		if indexOf(termcow.cows, cow) then
-			ngx.say("");
+	if not_nil(cow) then
+		if cow == "random" then
+			cow_args = cow_args .. " -f " .. "/usr/share/cows/" .. termcow.cows[math.random(1,table.getn(termcow.cows))] .. ".cow";
+		elseif indexOf(termcow.cows, cow) then
 			cow_args = cow_args .. " -f " .. "/usr/share/cows/" .. cow .. ".cow";
-		elseif cow == "random" then
-			cow_args = cow_args .. " -f " .. "/usr/share/cows/" .. termcow.cows[math.random(1,#termcow.cows)] .. ".cow";
 		else
-			args_error("cow");
+			args_error(args, "cow");
 		end
 	end;
-	if is(mode) then
-		if not is(tongue) then
+	if is_nil(mode) then
+		if not_nil(tongue) then
 			cow_args =  cow_args .. " -T " .. tongue;
 		end;
-		if not is(eye) then
+		if not_nil(eye) then
 			cow_args =  cow_args .. " -e " .. eye;
 		end;
 	else
@@ -50,7 +40,7 @@ local set_args = function(eye, tongue, mode, cow)
 		elseif mode == "youth" then
 			cow_args = cow_args .. " -y ";
 		else
-			args_error("mode");
+			args_error(args, "mode");
 		end;
 	end;
 	return cow_args;
@@ -58,13 +48,14 @@ end;
 if args["help"] ~= nil then
 	require('cowhelp')()
 else
-	local handle = io.popen(
+	cmd = (
 		"cow" .. (ngx.var[1] == "random" and termcow.op[math.random(1,2)] or ngx.var[1] ) ..
 		set_args(args["eye"], args["tongue"], args["mode"], args["cow"]) ..
 		" -W " .. (args["col"] or "22") ..
 		" " ..
 		( args["msg"] or "moo")
 	);
+	local handle = io.popen(cmd);
 	ngx.say(handle:read("*a"));
 	handle:close();
 end

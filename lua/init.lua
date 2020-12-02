@@ -20,3 +20,19 @@ function indexOf(t, object)
         end;
     end;
 end;
+function is_nil(val)
+    return val == nil or val == '';
+end;
+function not_nil(val)
+    return not is_nil(val)
+end;
+function args_error(args, key, msg)
+    ngx.say(
+        ( msg == nil and "Unsupported value on" or msg ) ..
+        " $GET[" .. key .. "]: " .. '\'' ..
+        ( (args == nil or args[key] == nil) and '' or args[key] ) .. '\''
+    );
+    ngx.say("");
+    ngx.say("Reference ".. ngx.var.scheme .. "://" .. ngx.var.host .. ngx.var.uri .. "?help");
+    ngx.exit(406);
+end;
