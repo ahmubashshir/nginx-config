@@ -1,3 +1,5 @@
+/*jshint esversion: 6 */
+
 var addEvent = ( function () {
 	if ( document.addEventListener ) {
 		return function ( el, type, fn ) {
@@ -28,6 +30,7 @@ function updateCrumbs () {
 	window.document.title = "Files: " + decodeURI( window.location.pathname );
 	setTimeout( function () {
 		var loc = window.location.pathname;
+		var link;
 		var segments = loc.split( '/' );
 		var breadcrumbs = '';
 		var currentPath = '/';
@@ -49,7 +52,7 @@ function updateCrumbs () {
 		addEvent( document.getElementById( 'list' ), 'click', navigate );
 		addEvent( document.getElementById( 'breadcrumbs' ), 'click', navigate );
 	}, 500 );
-};
+}
 
 function navigate ( event ) {
 	if ( event.target.nodeName == 'A' && event.target.href.endsWith( '/' ) ) {
@@ -66,71 +69,63 @@ function swapPage ( href, event = undefined ) {
 			var doc = document.implementation.createHTMLDocument();
 			doc.documentElement.innerHTML = data;
 			target.innerHTML = doc.getElementById( 'list' ).innerHTML;
-			delete doc;
 			if ( event ) {
 				var title = event.target.innerHTML;
 				history.pushState( {
 					page: title
 				}, title, event.target.href );
 			}
-			document.getElementById('search').value = '';
+			document.getElementById( 'search' ).value = '';
 			updateCrumbs();
 			table_row_link_class();
 		} );
-};
+}
 
 function table_row_link_class () {
 	document.getElementById( 'list' ).className = 'table table-hover table-dark';
-	headers = document.getElementsByTagName( 'th' );
-	for ( var i = 0; i < headers.length; i++ ) {
+	var headers = document.getElementsByTagName( 'th' );
+	var i;
+	for ( i = 0; i < headers.length; i++ ) {
 		headers[ i ].scope = "col";
 	}
-	files = document.getElementById( 'list' ).getElementsByTagName( 'tbody' )[ 0 ].getElementsByTagName( 'a' );
-	for ( var i = 0; i < files.length; i++ ) {
+	var files = document.getElementById( 'list' ).getElementsByTagName( 'tbody' )[ 0 ].getElementsByTagName( 'a' );
+	for ( i = 0; i < files.length; i++ ) {
 		if ( "classList" in files[ i ] ) files[ i ].classList.add( "text-info" );
 		else {
-			files[ i ].className = c.className.split( " " ).concat( "text-info" ).join( " " );
+			files[ i ].className = files[ i ].className.split( " " ).concat( "text-info" ).join( " " );
 		}
 	}
 }
-
-function nginxListItems () {
-	return [].slice.call( document.querySelectorAll( '#list tbody tr' ) );
-}
-
-addEvent( window, 'popstate', function ( e ) {
+addEvent( window, 'popstate', e => {
 	swapPage( window.location.pathname );
 } );
-addEvent( window, 'load', function ( e ) {
+addEvent( window, 'DOMContentLoaded', e => {
 	updateCrumbs();
 	table_row_link_class();
-
 	var form = document.createElement( 'form' );
 	var input = document.createElement( 'input' );
-
 	form.className = 'form';
 	form.setAttribute( 'onsubmit', "event.preventDefault();" );
 	input.name = 'filter';
 	input.id = 'search';
-	input.style = 'border-bottom-right-radius: 0; border-bottom-left-radius: 0;'
+	input.style = 'border-bottom-right-radius: 0; border-bottom-left-radius: 0;';
 	input.placeholder = 'Type to search...';
 	input.className = 'form-control text-light bg-dark';
 	form.appendChild( input );
 	document.getElementById( 'search_bar' ).appendChild( form );
-
 	input.addEventListener( 'keyup', function () {
 		var i,
 			e = "^(?=.*\\b" + this.value.trim().split( /\s+/ ).join( "\\b)(?=.*\\b" ) + ").*$",
 			n = RegExp( e, "i" );
-		nginxListItems().forEach( function ( item ) {
-			item.removeAttribute( 'hidden' );
-		} );
-		nginxListItems().filter( function ( item ) {
-			i = item.querySelector( 'td' ).textContent.replace( /\s+/g, " " );
-			return !n.test( i );
-		} ).forEach( function ( item ) {
+		Array.prototype.filter.call(
+			document.querySelectorAll( '#list tbody tr' ),
+			function ( item ) {
+				item.removeAttribute( 'hidden' )
+				i = item.querySelector( 'td' ).textContent.replace( /\s+/g, " " );
+				return !n.test( i );
+			}
+		).forEach( function ( item ) {
 			item.hidden = true;
 		} );
 	} );
-
 } );
