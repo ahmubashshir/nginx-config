@@ -23,7 +23,8 @@ var addEvent = ( function () {
 		};
 	}
 } )();
-var updateCrumbs = function () {
+
+function updateCrumbs () {
 	window.document.title = "Files: " + decodeURI( window.location.pathname );
 	setTimeout( function () {
 		var loc = window.location.pathname;
@@ -49,16 +50,15 @@ var updateCrumbs = function () {
 		addEvent( document.getElementById( 'breadcrumbs' ), 'click', navigate );
 	}, 500 );
 };
-var intercept = function ( event ) {
-	event.preventDefault();
-}
-var navigate = function ( event ) {
+
+function navigate ( event ) {
 	if ( event.target.nodeName == 'A' && event.target.href.endsWith( '/' ) ) {
 		event.preventDefault();
 		swapPage( event.target.href, event );
 	}
 }
-var swapPage = function ( href, event = undefined ) {
+
+function swapPage ( href, event = undefined ) {
 	fetch( href )
 		.then( response => response.text() )
 		.then( data => {
@@ -73,7 +73,7 @@ var swapPage = function ( href, event = undefined ) {
 					page: title
 				}, title, event.target.href );
 			}
-			window.nginxListItems = [].slice.call( document.querySelectorAll( '#list tbody tr' ) )
+			document.getElementById('search').value = '';
 			updateCrumbs();
 			table_row_link_class();
 		} );
@@ -87,11 +87,15 @@ function table_row_link_class () {
 	}
 	files = document.getElementById( 'list' ).getElementsByTagName( 'tbody' )[ 0 ].getElementsByTagName( 'a' );
 	for ( var i = 0; i < files.length; i++ ) {
-		if("classList" in files[ i ]) files[ i ].classList.add("text-info");
+		if ( "classList" in files[ i ] ) files[ i ].classList.add( "text-info" );
 		else {
-			files[ i ].className = c.className.split(" ").concat("text-info").join(" ");
+			files[ i ].className = c.className.split( " " ).concat( "text-info" ).join( " " );
 		}
 	}
+}
+
+function nginxListItems () {
+	return [].slice.call( document.querySelectorAll( '#list tbody tr' ) );
 }
 
 addEvent( window, 'popstate', function ( e ) {
@@ -100,4 +104,33 @@ addEvent( window, 'popstate', function ( e ) {
 addEvent( window, 'load', function ( e ) {
 	updateCrumbs();
 	table_row_link_class();
+
+	var form = document.createElement( 'form' );
+	var input = document.createElement( 'input' );
+
+	form.className = 'form';
+	form.setAttribute( 'onsubmit', "event.preventDefault();" );
+	input.name = 'filter';
+	input.id = 'search';
+	input.style = 'border-bottom-right-radius: 0; border-bottom-left-radius: 0;'
+	input.placeholder = 'Type to search...';
+	input.className = 'form-control text-light bg-dark';
+	form.appendChild( input );
+	document.getElementById( 'search_bar' ).appendChild( form );
+
+	input.addEventListener( 'keyup', function () {
+		var i,
+			e = "^(?=.*\\b" + this.value.trim().split( /\s+/ ).join( "\\b)(?=.*\\b" ) + ").*$",
+			n = RegExp( e, "i" );
+		nginxListItems().forEach( function ( item ) {
+			item.removeAttribute( 'hidden' );
+		} );
+		nginxListItems().filter( function ( item ) {
+			i = item.querySelector( 'td' ).textContent.replace( /\s+/g, " " );
+			return !n.test( i );
+		} ).forEach( function ( item ) {
+			item.hidden = true;
+		} );
+	} );
+
 } );

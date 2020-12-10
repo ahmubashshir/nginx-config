@@ -1,0 +1,202 @@
+/*
+  Uses Font-Awesome 5.15.1
+*/
+
+$selector: "#list tbody";
+
+@import "variables";
+
+/* BASIC
+~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+#{$selector} a:before {
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  content: fa-content($fa-var-file);
+  padding: 0 6px 0 0;
+  font-size: large;
+}
+
+#{$selector} a[href~="INSTALL" s]:before,
+#{$selector} a[href~="README" s]:before,
+#{$selector} a[href~="CHANGELOG" s]:before,
+#{$selector} a[href~="COPYING" s]:before {
+  content: fa-content($fa-var-file);
+}
+
+#{$selector} a[href$="/"]:before,
+#{$selector} a[href*="/?"]:before {
+  content: fa-content($fa-var-folder);
+}
+
+/* ARCHIVE
+~~~~~~~~~~~*/
+#{$selector} a[href$=".tgz" i]:before,
+#{$selector} a[href$=".tar.gz" i]:before,
+#{$selector} a[href$=".tar.xz" i]:before,
+#{$selector} a[href$=".rar" i]:before,
+#{$selector} a[href$=".tar" i]:before,
+#{$selector} a[href$=".zip" i]:before,
+#{$selector} a[href$=".7z" i]:before {
+  content: fa-content($fa-var-file-archive);
+}
+
+#{$selector} a[href$=".tar" i]:before {
+  content: fa-content($fa-var-tape);
+}
+
+/* APPLICATION
+~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+#{$selector} a[href$=".pgp" i]:before,
+#{$selector} a[href$=".xls" i]:before,
+#{$selector} a[href$=".exe" i]:before,
+#{$selector} a[href$=".swf" i]:before {
+  content: fa-content($fa-var-file-alt);
+}
+
+#{$selector} a[href$=".deb" i]:before,
+#{$selector} a[href$=".pkg.tar" i]:before,
+#{$selector} a[href$=".pkg.tar.gz" i]:before,
+#{$selector} a[href$=".pkg.tar.zst" i]:before,
+#{$selector} a[href$=".rpm" i]:before {
+  content: fa-content($fa-var-box);
+}
+
+#{$selector} a[href$=".xpi" i]:before,
+#{$selector} a[href$=".crx" i]:before,
+#{$selector} a[href$=".dll" i]:before,
+#{$selector} a[href$=".apk" i]:before,
+#{$selector} a[href$=".jar" i]:before {
+  content: fa-content($fa-var-cube);
+}
+
+#{$selector} a[href$=".mdf" i]:before,
+#{$selector} a[href$=".cue" i]:before,
+#{$selector} a[href$=".iso" i]:before {
+  content: fa-content($fa-var-compact-disc);
+}
+
+/* IMAGE */
+#{$selector} a[href$=".bmp" i]:before,
+#{$selector} a[href$=".svg" i]:before,
+#{$selector} a[href$=".gif" i]:before,
+#{$selector} a[href$=".jpg" i]:before,
+#{$selector} a[href$=".jpeg" i]:before,
+#{$selector} a[href$=".png" i]:before,
+#{$selector} a[href$=".tiff" i]:before,
+#{$selector} a[href$=".ico" i]:before,
+#{$selector} a[href$=".psd" i]:before,
+#{$selector} a[href$=".xcf" i]:before {
+  content: fa-content($fa-var-file-image);
+}
+
+/* AUDIO */
+#{$selector} a[href$=".m3u" i]:before,
+#{$selector} a[href$=".wma" i]:before,
+#{$selector} a[href$=".ogg" i]:before,
+#{$selector} a[href$=".oga" i]:before,
+#{$selector} a[href$=".wav" i]:before,
+#{$selector} a[href$=".flac" i]:before {
+  content: fa-content($fa-var-file-audio);
+}
+
+/* VIDEOS */
+#{$selector} a[href$=".avi" i]:before,
+#{$selector} a[href$=".ts" i]:before,
+#{$selector} a[href$=".mpeg" i]:before,
+#{$selector} a[href$=".mp4" i]:before,
+#{$selector} a[href$=".ogv" i]:before,
+#{$selector} a[href$=".mkv" i]:before,
+#{$selector} a[href$=".divx" i]:before,
+#{$selector} a[href$=".wmv" i]:before {
+  content: fa-content($fa-var-file-video);
+}
+
+/* BOOKS */
+#{$selector} a[href$=".epub" i]:before,
+#{$selector} a[href$=".mobi" i]:before,
+#{$selector} a[href$=".azw" i]:before,
+#{$selector} a[href$=".azw3" i]:before,
+#{$selector} a[href$=".fb2" i]:before,
+#{$selector} a[href$=".cbr" i]:before,
+#{$selector} a[href$=".cbz" i]:before,
+#{$selector} a[href$=".ps" i]:before {
+  content: fa-content($fa-var-book);
+}
+
+/* TEXT */
+#{$selector} a[href$=".txt" i]:before,
+#{$selector} a[href$=".srt" i]:before,
+#{$selector} a[href$=".idx" i]:before,
+#{$selector} a[href$=".conf" i]:before,
+#{$selector} a[href$=".bak" i]:before {
+  content: fa-content($fa-var-file-alt);
+}
+
+/* CODE:generic */
+#{$selector} a[href$=".sh"]:before,
+#{$selector} a[href$=".bat" i]:before,
+#{$selector} a[href$=".rb" i]:before,
+#{$selector} a[href$=".pl" i]:before {
+  content: fa-content($fa-var-terminal);
+}
+
+#{$selector} a[href$=".h"]:before,
+#{$selector} a[href$=".js" i]:before,
+#{$selector} a[href$=".c"]:before,
+#{$selector} a[href$=".cpp"]:before {
+  content: fa-content($fa-var-file-code);
+}
+
+#{$selector} a[href$=".xml"]:before,
+#{$selector} a[href$=".json"]:before,
+#{$selector} a[href$=".yml"]:before {
+  content: fa-content($fa-var-code);
+}
+
+/* CODE */
+#{$selector} a[href$=".py"]:before {
+  content: fa-content($fa-var-python);
+}
+
+#{$selector} a[href$=".java" i]:before {
+  content: fa-content($fa-var-java);
+}
+
+#{$selector} a[href$=".php" i]:before {
+  content: fa-content($fa-var-php);
+}
+
+#{$selector} a[href$=".css" i]:before {
+  content: fa-content($fa-var-css3);
+}
+
+#{$selector} a[href$=".htm" i]:before,
+#{$selector} a[href$=".html" i]:before {
+  content: fa-content($fa-var-html5);
+}
+
+/* DOCUMENTS */
+#{$selector} a[href$=".tsv" i]:before,
+#{$selector} a[href$=".csv" i]:before {
+  content: fa-content($fa-var-file-csv);
+}
+
+#{$selector} a[href$=".docx" i]:before,
+#{$selector} a[href$=".rtf" i]:before,
+#{$selector} a[href$=".doc" i]:before {
+  content: fa-content($fa-var-file-word);
+}
+
+#{$selector} a[href$=".pdf" i]:before {
+  content: fa-content($fa-var-file-pdf);
+}
+
+#{$selector} a[href$=".ppt" i]:before {
+  content: fa-content($fa-var-file-powerpoint);
+}
+
+#{$selector} a[href$=".md" i]:before {
+  content: fa-content($fa-var-markdown);
+}
