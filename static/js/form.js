@@ -6,6 +6,7 @@
 var form = document.createElement('form');
 var input = document.createElement('input');
 form.className = 'form';
+form.setAttribute('onsubmit', "event.preventDefault();");
 input.name = 'filter';
 input.id = 'search';
 input.style = 'border-bottom-right-radius: 0; border-bottom-left-radius: 0;'
@@ -16,16 +17,16 @@ form.appendChild(input);
 
 document.getElementById('search_bar').appendChild(form);
 
-var listItems = [].slice.call(document.querySelectorAll('#list tbody tr'));
+window.nginxListItems = [].slice.call(document.querySelectorAll('#list tbody tr'));
 
 input.addEventListener('keyup', function () {
     var i,
         e = "^(?=.*\\b" + this.value.trim().split(/\s+/).join("\\b)(?=.*\\b") + ").*$",
         n = RegExp(e, "i");
-    listItems.forEach(function(item) {
+    window.nginxListItems.forEach(function(item) {
         item.removeAttribute('hidden');
     });
-    listItems.filter(function(item) {
+    window.nginxListItems.filter(function(item) {
         i = item.querySelector('td').textContent.replace(/\s+/g, " ");
         return !n.test(i);
     }).forEach(function(item) {

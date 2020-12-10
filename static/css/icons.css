@@ -11,7 +11,7 @@
   src: url("../fonts/fontawesome-webfont.eot?#iefix&v=4.7.0") format("embedded-opentype"), url("../fonts/fontawesome-webfont.woff2?v=4.7.0") format("woff2"), url("../fonts/fontawesome-webfont.woff?v=4.7.0") format("woff"), url("../fonts/fontawesome-webfont.ttf?v=4.7.0") format("truetype"), url("../fonts/fontawesome-webfont.svg?v=4.7.0#fontawesomeregular") format("svg");
   font-weight: normal;
   font-style: normal; }
-.fa {
+.fa, #list tbody a:before {
   display: inline-block;
   font: normal normal normal 14px/1 FontAwesome;
   font-size: inherit;
@@ -68,9 +68,9 @@
 .fa-pull-right {
   float: right; }
 
-.fa.fa-pull-left {
+.fa.fa-pull-left, #list tbody a.fa-pull-left:before {
   margin-right: .3em; }
-.fa.fa-pull-right {
+.fa.fa-pull-right, #list tbody a.fa-pull-right:before {
   margin-left: .3em; }
 
 /* Deprecated as of 4.4.0 */
@@ -80,9 +80,9 @@
 .pull-left {
   float: left; }
 
-.fa.pull-left {
+.fa.pull-left, #list tbody a.pull-left:before {
   margin-right: .3em; }
-.fa.pull-right {
+.fa.pull-right, #list tbody a.pull-right:before {
   margin-left: .3em; }
 
 .fa-spin {
@@ -235,7 +235,7 @@
 .fa-home:before {
   content: ""; }
 
-.fa-file-o:before {
+.fa-file-o:before, #list tbody a:before {
   content: ""; }
 
 .fa-clock-o:before {
@@ -299,14 +299,14 @@
 .fa-tags:before {
   content: ""; }
 
-.fa-book:before, #list > tbody a[href$=".epub" i]:before,
-#list > tbody a[href$=".mobi" i]:before,
-#list > tbody a[href$=".azw" i]:before,
-#list > tbody a[href$=".azw3" i]:before,
-#list > tbody a[href$=".fb2" i]:before,
-#list > tbody a[href$=".cbr" i]:before,
-#list > tbody a[href$=".cbz" i]:before,
-#list > tbody a[href$=".ps" i]:before {
+.fa-book:before, #list tbody a[href$=".epub" i]:before,
+#list tbody a[href$=".mobi" i]:before,
+#list tbody a[href$=".azw" i]:before,
+#list tbody a[href$=".azw3" i]:before,
+#list tbody a[href$=".fb2" i]:before,
+#list tbody a[href$=".cbr" i]:before,
+#list tbody a[href$=".cbz" i]:before,
+#list tbody a[href$=".ps" i]:before {
   content: ""; }
 
 .fa-bookmark:before {
@@ -534,8 +534,8 @@
 .fa-shopping-cart:before {
   content: ""; }
 
-.fa-folder:before, #list > tbody a[href$="/"]:before,
-#list > tbody a[href*="/?"]:before {
+.fa-folder:before, #list tbody a[href$="/"]:before,
+#list tbody a[href*="/?"]:before {
   content: ""; }
 
 .fa-folder-open:before {
@@ -863,7 +863,17 @@
 .fa-cutlery:before {
   content: ""; }
 
-.fa-file-text-o:before {
+.fa-file-text-o:before, #list tbody a[href$=".doc" i]:before, #list tbody a[href$=".pgp" i]:before, #list tbody a[href$=".xml" i]:before, #list tbody a[href$=".xls" i]:before, #list tbody a[href$=".ppt" i]:before, #list tbody a[href$=".7z" i]:before, #list tbody a[href$=".torrent" i]:before, #list tbody a[href$=".iso" i]:before, #list tbody a[href$=".cue" i]:before,
+#list tbody a[href$=".bin" i]:before, #list tbody a[href$=".deb" i]:before, #list tbody a[href$=".exe" i]:before, #list tbody a[href$=".swf" i]:before, #list tbody a[href$=".tgz" i]:before,
+#list tbody a[href$=".tar.gz" i]:before,
+#list tbody a[href$=".tar.xz" i]:before, #list tbody a[href$=".xpi" i]:before, #list tbody a[href$=".apk" i]:before, #list tbody a[href$=".bat" i]:before, #list tbody a[href$=".jar" i]:before, #list tbody a[href$=".pl" i]:before, #list tbody a[href$=".php" i]:before, #list tbody a[href$=".rar" i]:before, #list tbody a[href$=".rpm" i]:before, #list tbody a[href$=".rb" i]:before, #list tbody a[href$=".tar" i]:before, #list tbody a[href$=".zip" i]:before, #list tbody a[href$=".m3u" i]:before, #list tbody a[href$=".mpeg" i]:before, #list tbody a[href$=".wma" i]:before, #list tbody a[href$=".ogg" i]:before, #list tbody a[href$=".wav" i]:before, #list tbody a[href$=".flac" i]:before, #list tbody a[href$=".bmp" i]:before,
+#list tbody a[href$=".svg" i]:before, #list tbody a[href$=".gif" i]:before, #list tbody a[href$=".jpg" i]:before,
+#list tbody a[href$=".jpeg" i]:before, #list tbody a[href$=".png" i]:before, #list tbody a[href$=".tiff" i]:before, #list tbody a[href$=".ico" i]:before, #list tbody a[href$=".psd" i]:before, #list tbody a[href$=".xcf" i]:before, #list tbody a[href$=".css" i]:before, #list tbody a[href$=".htm" i]:before,
+#list tbody a[href$=".html" i]:before,
+#list tbody a[href$=".md" i]:before, #list tbody a[href$=".txt" i]:before,
+#list tbody a[href$=".srt" i]:before,
+#list tbody a[href$=".idx" i]:before
+#list tbody a[href$=".json" i]:before, #list tbody a[href$=".csv" i]:before, #list tbody a[href$=".conf" i]:before, #list tbody a[href$=".rtf" i]:before, #list tbody a[href$=".bak" i]:before, #list tbody a[href$=".c"]:before, #list tbody a[href$=".cpp"]:before, #list tbody a[href~="CHANGELOG" i]:before, #list tbody a[href~="COPYING" i]:before, #list tbody a[href~="INSTALL" i]:before, #list tbody a[href$=".java" i]:before, #list tbody a[href$=".js" i]:before, #list tbody a[href$=".h"]:before, #list tbody a[href$=".py"]:before, #list tbody a[href~="README"]:before, #list tbody a[href$=".sh"]:before, #list tbody a[href$=".sql"]:before, #list tbody a[href$=".xml"]:before {
   content: ""; }
 
 .fa-building-o:before {
@@ -1161,10 +1171,10 @@
 .fa-btc:before {
   content: ""; }
 
-.fa-file:before, #list > tbody a:before, #list > tbody a[href~="INSTALL" s]:before,
-#list > tbody a[href~="README" s]:before,
-#list > tbody a[href~="CHANGELOG" s]:before,
-#list > tbody a[href~="COPYING" s]:before {
+.fa-file:before, #list tbody a[href~="INSTALL" s]:before,
+#list tbody a[href~="README" s]:before,
+#list tbody a[href~="CHANGELOG" s]:before,
+#list tbody a[href~="COPYING" s]:before {
   content: ""; }
 
 .fa-file-text:before {
@@ -1457,7 +1467,7 @@
 .fa-database:before {
   content: ""; }
 
-.fa-file-pdf-o:before, #list > tbody a[href$=".pdf" i]:before {
+.fa-file-pdf-o:before, #list tbody a[href$=".pdf" i]:before {
   content: ""; }
 
 .fa-file-word-o:before {
@@ -1484,13 +1494,13 @@
 
 .fa-file-movie-o:before,
 .fa-file-video-o:before,
-#list > tbody a[href$=".avi" i]:before,
-#list > tbody a[href$=".ts" i]:before,
-#list > tbody a[href$=".mpeg" i]:before,
-#list > tbody a[href$=".mp4" i]:before,
-#list > tbody a[href$=".mkv" i]:before,
-#list > tbody a[href$=".divx" i]:before,
-#list > tbody a[href$=".wmv" i]:before {
+#list tbody a[href$=".avi" i]:before,
+#list tbody a[href$=".ts" i]:before,
+#list tbody a[href$=".mpeg" i]:before,
+#list tbody a[href$=".mp4" i]:before,
+#list tbody a[href$=".mkv" i]:before,
+#list tbody a[href$=".divx" i]:before,
+#list tbody a[href$=".wmv" i]:before {
   content: ""; }
 
 .fa-file-code-o:before {
@@ -2341,290 +2351,18 @@
   overflow: visible;
   clip: auto; }
 
-#list > tbody a:before {
-  font: normal normal normal 18px FontAwesome;
-  padding: 0 6px 0 0; }
-
-#list > tbody a[href~="INSTALL" s]:before,
-#list > tbody a[href~="README" s]:before,
-#list > tbody a[href~="CHANGELOG" s]:before,
-#list > tbody a[href~="COPYING" s]:before {
-  padding: 0 6px 0 0; }
-
-#list > tbody a[href$="/"]:before,
-#list > tbody a[href*="/?"]:before {
+#list tbody a:before {
   padding: 0 6px 0 0; }
 
 /* A P P L I C A T I O N
 ~~~~~~~~~~~~~~~~~~~~~~~~*/
-#list > tbody a[href$=".doc" i]:before {
-  content: "\f0f6";
-  padding: 0 6px 0 0; }
-
-#list > tbody a[href$=".pdf" i]:before {
-  padding: 0 6px 0 0; }
-
-#list > tbody a[href$=".pgp" i]:before {
-  content: "\f0f6";
-  padding: 0 6px 0 0; }
-
-#list > tbody a[href$=".xml" i]:before {
-  content: "\f0f6";
-  padding: 0 6px 0 0; }
-
-#list > tbody a[href$=".xls" i]:before {
-  content: "\f0f6";
-  padding: 0 6px 0 0; }
-
-#list > tbody a[href$=".ppt" i]:before {
-  content: "\f0f6";
-  padding: 0 6px 0 0; }
-
-#list > tbody a[href$=".7z" i]:before {
-  content: "\f0f6";
-  padding: 0 6px 0 0; }
-
-#list > tbody a[href$=".torrent" i]:before {
-  content: "\f0f6";
-  padding: 0 6px 0 0; }
-
-#list > tbody a[href$=".iso" i]:before {
-  content: "\f0f6";
-  padding: 0 6px 0 0; }
-
-#list > tbody a[href$=".cue" i]:before,
-#list > tbody a[href$=".bin" i]:before {
-  content: "\f0f6";
-  padding: 0 6px 0 0; }
-
-#list > tbody a[href$=".deb" i]:before {
-  content: "\f0f6";
-  padding: 0 6px 0 0; }
-
-#list > tbody a[href$=".exe" i]:before {
-  content: "\f0f6";
-  padding: 0 6px 0 0; }
-
-#list > tbody a[href$=".swf" i]:before {
-  content: "\f0f6";
-  padding: 0 6px 0 0; }
-
-#list > tbody a[href$=".tgz" i]:before,
-#list > tbody a[href$=".tar.gz" i]:before,
-#list > tbody a[href$=".tar.xz" i]:before {
-  content: "\f0f6";
-  padding: 0 6px 0 0; }
-
-#list > tbody a[href$=".xpi" i]:before {
-  content: "\f0f6";
-  padding: 0 6px 0 0; }
-
-#list > tbody a[href$=".apk" i]:before {
-  content: "\f0f6";
-  padding: 0 6px 0 0; }
-
-#list > tbody a[href$=".bat" i]:before {
-  content: "\f0f6";
-  padding: 0 6px 0 0; }
-
-#list > tbody a[href$=".jar" i]:before {
-  content: "\f0f6";
-  padding: 0 6px 0 0; }
-
-#list > tbody a[href$=".pl" i]:before {
-  content: "\f0f6";
-  padding: 0 6px 0 0; }
-
-#list > tbody a[href$=".php" i]:before {
-  content: "\f0f6";
-  padding: 0 6px 0 0; }
-
-#list > tbody a[href$=".rar" i]:before {
-  content: "\f0f6";
-  padding: 0 6px 0 0; }
-
-#list > tbody a[href$=".rpm" i]:before {
-  content: "\f0f6";
-  padding: 0 6px 0 0; }
-
-#list > tbody a[href$=".rb" i]:before {
-  content: "\f0f6";
-  padding: 0 6px 0 0; }
-
-#list > tbody a[href$=".tar" i]:before {
-  content: "\f0f6";
-  padding: 0 6px 0 0; }
-
-#list > tbody a[href$=".zip" i]:before {
-  content: "\f0f6";
-  padding: 0 6px 0 0; }
-
 /* A U D I O
 ~~~~~~~~~~~~*/
-#list > tbody a[href$=".m3u" i]:before {
-  content: "\f0f6";
-  padding: 0 6px 0 0; }
-
-#list > tbody a[href$=".mpeg" i]:before {
-  content: "\f0f6";
-  padding: 0 6px 0 0; }
-
-#list > tbody a[href$=".wma" i]:before {
-  content: "\f0f6";
-  padding: 0 6px 0 0; }
-
-#list > tbody a[href$=".ogg" i]:before {
-  content: "\f0f6";
-  padding: 0 6px 0 0; }
-
-#list > tbody a[href$=".wav" i]:before {
-  content: "\f0f6";
-  padding: 0 6px 0 0; }
-
-#list > tbody a[href$=".flac" i]:before {
-  content: "\f0f6";
-  padding: 0 6px 0 0; }
-
 /* I M A G E
 ~~~~~~~~~~~~*/
-#list > tbody a[href$=".bmp" i]:before,
-#list > tbody a[href$=".svg" i]:before {
-  content: "\f0f6";
-  padding: 0 6px 0 0; }
-
-#list > tbody a[href$=".gif" i]:before {
-  content: "\f0f6";
-  padding: 0 6px 0 0; }
-
-#list > tbody a[href$=".jpg" i]:before,
-#list > tbody a[href$=".jpeg" i]:before {
-  content: "\f0f6";
-  padding: 0 6px 0 0; }
-
-#list > tbody a[href$=".png" i]:before {
-  content: "\f0f6";
-  padding: 0 6px 0 0; }
-
-#list > tbody a[href$=".tiff" i]:before {
-  content: "\f0f6";
-  padding: 0 6px 0 0; }
-
-#list > tbody a[href$=".ico" i]:before {
-  content: "\f0f6";
-  padding: 0 6px 0 0; }
-
-#list > tbody a[href$=".psd" i]:before {
-  content: "\f0f6";
-  padding: 0 6px 0 0; }
-
-#list > tbody a[href$=".xcf" i]:before {
-  content: "\f0f6";
-  padding: 0 6px 0 0; }
-
 /* T E X T
 ~~~~~~~~~~*/
-#list > tbody a[href$=".css" i]:before {
-  content: "\f0f6";
-  padding: 0 6px 0 0; }
-
-#list > tbody a[href$=".htm" i]:before,
-#list > tbody a[href$=".html" i]:before,
-#list > tbody a[href$=".md" i]:before {
-  content: "\f0f6";
-  padding: 0 6px 0 0; }
-
-#list > tbody a[href$=".txt" i]:before,
-#list > tbody a[href$=".json" i]:before {
-  content: "\f0f6";
-  padding: 0 6px 0 0; }
-
-#list > tbody a[href$=".csv" i]:before {
-  content: "\f0f6";
-  padding: 0 6px 0 0; }
-
-#list > tbody a[href$=".conf" i]:before {
-  content: "\f0f6";
-  padding: 0 6px 0 0; }
-
-#list > tbody a[href$=".rtf" i]:before {
-  content: "\f0f6";
-  padding: 0 6px 0 0; }
-
-#list > tbody a[href$=".bak" i]:before {
-  content: "\f0f6";
-  padding: 0 6px 0 0; }
-
-#list > tbody a[href$=".c"]:before {
-  content: "\f0f6";
-  padding: 0 6px 0 0; }
-
-#list > tbody a[href$=".cpp"]:before {
-  content: "\f0f6";
-  padding: 0 6px 0 0; }
-
-#list > tbody a[href~="CHANGELOG" i]:before {
-  content: "\f0f6";
-  padding: 0 6px 0 0; }
-
-#list > tbody a[href~="COPYING" i]:before {
-  content: "\f0f6";
-  padding: 0 6px 0 0; }
-
-#list > tbody a[href~="INSTALL" i]:before {
-  content: "\f0f6";
-  padding: 0 6px 0 0; }
-
-#list > tbody a[href$=".java" i]:before {
-  content: "\f0f6";
-  padding: 0 6px 0 0; }
-
-#list > tbody a[href$=".js" i]:before {
-  content: "\f0f6";
-  padding: 0 6px 0 0; }
-
-#list > tbody a[href$=".h"]:before {
-  content: "\f0f6";
-  padding: 0 6px 0 0; }
-
-#list > tbody a[href$=".py"]:before {
-  content: "\f0f6";
-  padding: 0 6px 0 0; }
-
-#list > tbody a[href~="README"]:before {
-  content: "\f0f6";
-  padding: 0 6px 0 0; }
-
-#list > tbody a[href$=".sh"]:before {
-  content: "\f0f6";
-  padding: 0 6px 0 0; }
-
-#list > tbody a[href$=".sql"]:before {
-  content: "\f0f6";
-  padding: 0 6px 0 0; }
-
-#list > tbody a[href$=".xml"]:before {
-  content: "\f0f6";
-  padding: 0 6px 0 0; }
-
 /* videos */
-#list > tbody a[href$=".avi" i]:before,
-#list > tbody a[href$=".ts" i]:before,
-#list > tbody a[href$=".mpeg" i]:before,
-#list > tbody a[href$=".mp4" i]:before,
-#list > tbody a[href$=".mkv" i]:before,
-#list > tbody a[href$=".divx" i]:before,
-#list > tbody a[href$=".wmv" i]:before {
-  padding: 0 6px 0 0; }
-
 /* books */
-#list > tbody a[href$=".epub" i]:before,
-#list > tbody a[href$=".mobi" i]:before,
-#list > tbody a[href$=".azw" i]:before,
-#list > tbody a[href$=".azw3" i]:before,
-#list > tbody a[href$=".fb2" i]:before,
-#list > tbody a[href$=".cbr" i]:before,
-#list > tbody a[href$=".cbz" i]:before,
-#list > tbody a[href$=".ps" i]:before {
-  padding: 0 6px 0 0; }
 
 /*# sourceMappingURL=icons.css.map */
