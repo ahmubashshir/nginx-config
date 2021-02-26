@@ -20,14 +20,22 @@
       :focus {
         outline: none;
       }
+      * {
+        scrollbar-color: var(--secondary) var(--dark);
+      }
     </style>
   </head>
-  <body>
-    <div class="navbar navbar-dark bg-primary">
-      <ol id="breadcrumbs" class="breadcrumb fixed-top bg-primary" style="border-top-right-radius: 0;border-top-left-radius: 0;">
+  <body class="background: transparent;">
+    <nav class="navbar navbar-expand-sm  bg-primary fixed-top" style="padding: 0.2em;padding-bottom: 0;border-radius: 0.5em;">
+      <div class="collapse navbar-collapse">
+        <ol id="breadcrumbs" class="navbar-nav breadcrumb mr-auto bg-primary" style="padding-top: 1em;padding-bottom: 0.25em;">
           <li class="breadcrumb-item active"><a href="#"></a></li>
-      </ol>
-    </div>
-    <div id="container" class="container-fluid">
-      <br/>
-      <div id="search_bar" class=""></div>
+        </ol>
+        <div class="spinner-border spinner-border-sm my-2 my-sm-0" id="loading-spinner" style="margin-right: 1em;display: none;">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </div>
+    </nav>
+    <div id="container" class="container-fluid" style="margin-top: 4.5rem;">
+      <div id="search_bar"></div>
+      <div id="list-container" class="overflow-auto bd-content bg-transparent" style="height: 80vh !important;border-radius: 0 0 5px 5px;">

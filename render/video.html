@@ -4,165 +4,32 @@
 		<meta charset="UTF-8">
 		<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<link href="https://cdn.jsdelivr.net/npm/video.js/dist/video-js.css" rel="stylesheet" />
-		<link href="https://cdn.jsdelivr.net/npm/videojs-vjsdownload/dist/videojs-vjsdownload.css" rel="stylesheet" />
-		<!-- If you'd like to support IE8 (for Video.js versions prior to v7) -->
-		<script type="text/javascript" async>
-			var hr = new XMLHttpRequest();
-			hr.onloadend = function() {
-				//var video = document.getElementById("video");
-				var node = document.getElementById("vidsrc");
-				if (this.readyState == 4 && this.status == 200)
-				{
-					node.setAttribute("type", this.response.type);
-				}
-				else
-				{
-					node.setAttribute("type", this.response.type);
-				}
-				node.removeAttribute("id");
-				delete node;
-				delete video;
-				delete this;
-			}
-			hr.open("HEAD", location.pathname);
-			hr.responseType = "blob";
-			hr.send();
-		</script>
-		<style>
-			/*
-			Player Skin Designer for Video.js
-			http://videojs.com
-					To customize the player skin edit
-			the CSS below. Click "details"
-			below to add comments or questions.
-			This file uses some SCSS. Learn more
-			at http://sass-lang.com/guide)
-					This designer can be linked to at:
-			https://codepen.io/heff/pen/EarCt/left/?editors=010
-			*/
-			:focus {
-				outline: none;
-			}
-			.video-js {
-				/* The base font size controls the size of everything, not just text.
-				All dimensions use em-based sizes so that the scale along with the font size.
-				Try increasing it to 15px and see what happens. */
-				outline: none;
-				font-size: 10px;
-				/* The main font color changes the ICON COLORS as well as the text */
-				color: #fff;
-			}
-			/* The "Big Play Button" is the play button that shows before the video plays.
-			To center it set the align values to center and middle. The typical location
-			of the button is the center, but there is trend towards moving it to a corner
-			where it gets out of the way of valuable content in the poster image.*/
-			.vjs-default-skin .vjs-big-play-button {
-				/* The font size is what makes the big play button...big.
-				All width/height values use ems, which are a multiple of the font size.
-				If the .video-js font-size is 10px, then 3em equals 30px.*/
-				font-size: 3em;
-				/* We're using SCSS vars here because the values are used in multiple places.
-				Now that font size is set, the following em values will be a multiple of the
-				new font size. If the font-size is 3em (30px), then setting any of
-				the following values to 3em would equal 30px. 3 * font-size. */
-				/* 1.5em = 45px default */
-				line-height: 1.5em;
-				height: 1.5em;
-				width: 3em;
-				/* 0.06666em = 2px default */
-				border: 0.06666em solid #fff;
-				/* 0.3em = 9px default */
-				border-radius: 0.3em;
-				/* Align center */
-				left: 50%;
-				top: 50%;
-				margin-left: -1.5em;
-				margin-top: -0.75em;
-			}
-			/* The default color of control backgrounds is mostly black but with a little
-			bit of blue so it can still be seen on all-black video frames, which are common. */
-			.video-js .vjs-control-bar,
-			.video-js .vjs-big-play-button,
-			.video-js .vjs-menu-button .vjs-menu-content {
-				/* IE8 - has no alpha support */
-				background-color: #2B333F;
-				/* Opacity: 1.0 = 100%, 0.0 = 0% */
-				background-color: rgba(43, 51, 63, 0.7);
-			}
-			/* Slider - used for Volume bar and Progress bar */
-			.video-js .vjs-slider {
-				background-color: #73859f;
-				background-color: rgba(115, 133, 159, 0.5);
-			}
-			/* The slider bar color is used for the progress bar and the volume bar
-			(the first two can be removed after a fix that's coming) */
-			.video-js .vjs-volume-level,
-			.video-js .vjs-play-progress,
-			.video-js .vjs-slider-bar {
-				background: #fff;
-			}
-			/* The main progress bar also has a bar that shows how much has been loaded. */
-			.video-js .vjs-load-progress {
-				/* For IE8 we'll lighten the color */
-				background: #bfc7d3;
-				/* Otherwise we'll rely on stacked opacities */
-				background: rgba(115, 133, 159, 0.5);
-			}
-			/* The load progress bar also has internal divs that represent
-			smaller disconnected loaded time ranges */
-			.video-js .vjs-load-progress div {
-				/* For IE8 we'll lighten the color */
-				background: white;
-				/* Otherwise we'll rely on stacked opacities */
-				background: rgba(115, 133, 159, 0.75);
-			}
-			.video-js {
-				display: block;
-				margin-top: auto;
-				margin-left: auto;
-				margin-right: auto;
-				margin-bottom: auto;
-				width: 100%;
-				/*padding: 70px 0;*/
-			}
-/*			body {
-				display: flex;
-				justify-content: center;
-				align-items: center;
-			}*/
-			body {
-				margin: auto;
-				width: 70%;
-				border-radius: 20px;
-				margin: 0;
-				position: absolute;
-				top: 50%;
-				left: 50%;
-				overflow: hidden;
-				transform: translate(-50%, -50%);
-			}
-		</style>
+		<script type="text/javascript" src="/static/js/file.js"></script>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/video.js/dist/video-js.css">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/videojs-vjsdownload/dist/videojs-vjsdownload.css">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/videojs-seek-buttons/dist/videojs-seek-buttons.css">
+		<link rel="stylesheet" href="/static/css/video.css">
 		<link rel="stylesheet" href="https://bootswatch.com/4/darkly/bootstrap.css">
-		<link rel="stylesheet" href="/static/css/icons.css"/>
-		<script type="text/javascript" src="/static/js/history.js"></script>
-		<script type="text/javascript" src="/static/js/form.js" defer></script>
 		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0/jquery.min.js" crossorigin="anonymous"></script>
 	</head>
-	<body class="container-fluid">
-			<div class="navbar navbar-dark bg-primary">
-				<ol id="breadcrumbs" class="breadcrumb fixed-top bg-primary" style="border-top-right-radius: 0;border-top-left-radius: 0;">
-					<li class="breadcrumb-item active"><a href="#"></a></li>
-				</ol>
-			</div>
-			<div class="jumbotron">
-				<br/>
+	<body style="background: transparent;">
+		    <nav class="navbar navbar-expand-sm  bg-primary" style="padding: 0.2em;padding-bottom: 0;border-radius: 0.5em;">
+				<div class="collapse navbar-collapse">
+					<ol id="breadcrumbs" class="navbar-nav breadcrumb mr-auto bg-primary" style="padding-top: 1em;padding-bottom: 0.25em;">
+						<li class="breadcrumb-item active"><a href="#"></a></li>
+					</ol>
+					<div class="spinner-border spinner-border-sm my-2 my-sm-0" id="loading-spinner" style="margin-right: 1em;display: none;">
+						<span class="sr-only">Loading...</span>
+					</div>
+				</div>
+			</nav>
+			<div id="container" class="container-fluid" style="margin-top: 1em; background: transparent;">
 				<video
 					id="video"
 					class="video-js vjs-default-skin"
 					controls
 					preload="metadata"
-					data-setup='{"plugins": {"vjsdownload":{"textControl": "Download video","name": "downloadButton","downloadURL": "<!--# echo var="video_uri" default="" encoding="url" -->?dl"}},"playbackRates": [1, 1.5, 2]}'
+					data-setup='{"plugins": {"seekButtons": {"forward": 80,"back": 10},"vjsdownload": {"textControl": "Download video","name": "downloadButton","downloadURL": "<!--# echo var="video_uri" default="" encoding="url" -->?dl"}},"playbackRates": [1, 1.5, 2]}'
 				>
 					<source id="vidsrc" src="<!--# echo var="video_uri" default="" -->?raw"></source>
 					<p class="vjs-no-js">
@@ -172,29 +39,6 @@
 			</div>
 			<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/video.js/dist/video.min.js"></script>
 			<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/videojs-vjsdownload/dist/videojs-vjsdownload.min.js"></script>
-			<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/videojs-landscape-fullscreen/dist/videojs-landscape-fullscreen.min.js"></script>
-			<script>
-				var loc = window.location.pathname;
-				var segments = loc.split('/');
-				var breadcrumbs = '';
-				var currentPath = '/';
-				for (var i=0; i<segments.length; i++) {
-					if (segments[i] !== '') {
-						currentPath += segments[i] + '/';
-						if(segments.length > i + 1) {
-						link = '<a href="'+ currentPath + '">' + decodeURIComponent(segments[i]) + '<\/a>';
-						}
-						else {
-							link = decodeURIComponent(segments[i]);
-						}
-						breadcrumbs += '<li class="breadcrumb-item' + ((segments.length == i + 1)?' active fg-active':'') + '">' + link + '<\/li>';
-					} else if (segments.length -1 !== i) {
-						currentPath += '';
-						breadcrumbs += '<li class="breadcrumb-item"><a href="' + currentPath + '">Root<\/a><\/li>';
-					}
-				}
-				document.getElementById('breadcrumbs').innerHTML = breadcrumbs;
-				document.evaluate('//*[@id="list"]/tbody/tr[1]/td[1]/a', document, null, XPathResult.ANY_TYPE, null).iterateNext().text = "..";
-			</script>
+			<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/videojs-seek-buttons/dist/videojs-seek-buttons.min.js"></script>
 	</body>
 </html>
