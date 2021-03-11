@@ -29,9 +29,9 @@
 					class="video-js vjs-default-skin"
 					controls
 					preload="metadata"
-					data-setup='{"plugins": {"seekButtons": {"forward": 80,"back": 10},"vjsdownload": {"textControl": "Download video","name": "downloadButton","downloadURL": "<!--# echo var="uri" default="" encoding="url" -->?dl"}},"playbackRates": [1, 1.5, 2]}'
+					data-setup='{"plugins": {"seekButtons": {"forward": 80,"back": 10},"vjsdownload": {"textControl": "Download video","name": "downloadButton","downloadURL": "<!--# echo var="download" default="" encoding="url" -->"}},"playbackRates": [1, 1.5, 2]}'
 				>
-					<source id="vidsrc" src="<!--# echo var="raw_uri" default="" -->?raw"></source>
+					<source id="vidsrc" src="<!--# echo var="resource" default="" -->"></source>
 					<p class="vjs-no-js">
 						To view this video please enable JavaScript, and consider upgrading to a web browser that<a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
 					</p>
