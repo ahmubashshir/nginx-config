@@ -1,9 +1,15 @@
 /*jshint esversion: 6 */
 "use strict";
 
-var req = undefined;
+/* @global */
+var fetchQueue = Array();
 
-var addEvent = ( function () {
+/*
+ * addEvent Factory
+ *
+ * @returns {function}
+ */
+const addEvent = ( function () {
 	if ( document.addEventListener ) {
 		return function ( el, type, fn ) {
 			if ( el && el.nodeName || el === window ) {
@@ -29,57 +35,68 @@ var addEvent = ( function () {
 	}
 } )();
 
-function updateCrumbs () {
-	let breadcrumb = document.getElementById( 'breadcrumbs' );
-	let path = window.location.pathname;
+
+/**
+ * Update breadcrumb with current path
+ *
+ * @param {HTMLDocument} doc - HTMLDocument to work on
+ * @param {string} [path=location.pathname] - Path of the HTMLDocument
+ */
+const updateCrumbs = function ( doc = document, path = location.pathname ) {
+	let breadcrumb = doc.getElementById( 'breadcrumbs' );
+
 	if ( path.endsWith( "/" ) )
-		window.document.title = "Files: " + decodeURI( path );
+		doc.title = "Files: " + decodeURI( path );
 	else
-		window.document.title = "View: " + decodeURI( path );
+		doc.title = "View: " + decodeURI( path );
 
 	if ( breadcrumb ) {
-		setTimeout( function () {
-			let loc = window.location.pathname;
-			let link, crumb;
-			let segments = loc.split( '/' );
-			let breadcrumbs = '';
-			let currentPath = '/';
-			if ( segments[ segments.length - 1 ] == "" ) {
-				segments.splice( segments.length - 1, segments.length );
-			}
+		let link, crumb;
+		let segments = path.split( '/' );
+		let breadcrumbs = '';
+		let currentPath = '/';
+		if ( segments[ segments.length - 1 ] == "" ) {
+			segments.splice( segments.length - 1, segments.length );
+		}
 
-			for ( var i = 0; i < segments.length; i++ ) {
-				crumb = document.createElement( 'li' );
-				crumb.classList.add( "breadcrumb-item" )
-				if ( i == 0 ) {
-					crumb.append( "Root" );
-					breadcrumbs += crumb.outerHTML;
-				} else if ( i > 0 ) {
-					currentPath += segments[ i ] + '/';
-					if ( i < segments.length - 1 ) {
-						link = document.createElement( 'a' );
-						link.href = currentPath;
-						link.text = decodeURIComponent( segments[ i ] );
-					} else {
-						link = decodeURIComponent( segments[ i ] );
-					}
-					if ( i == segments.length - 1 ) {
-						crumb.classList.add( 'active', 'fg-active' )
-					}
-					crumb.append( link );
-					breadcrumbs += crumb.outerHTML;
+		// Initialize breadcrumb as path bar
+		for ( var i = 0; i < segments.length; i++ ) {
+			crumb = doc.createElement( 'li' );
+			crumb.classList.add( "breadcrumb-item" )
+			if ( i == 0 ) {
+				crumb.append( "Root" );
+				breadcrumbs += crumb.outerHTML;
+			} else if ( i > 0 ) {
+				currentPath += segments[ i ] + '/';
+				if ( i < segments.length - 1 ) {
+					link = doc.createElement( 'a' );
+					link.href = currentPath;
+					link.text = decodeURIComponent( segments[ i ] );
+				} else {
+					link = decodeURIComponent( segments[ i ] );
 				}
+				if ( i == segments.length - 1 ) {
+					crumb.classList.add( 'active', 'fg-active' )
+				}
+				crumb.append( link );
+				breadcrumbs += crumb.outerHTML;
 			}
-			breadcrumb.innerHTML = breadcrumbs;
-			const spinner = document.getElementById( 'loading-spinner' );
-			spinner.style.display = "none";
-			addEvent( breadcrumb, 'click', navigate );
-		}, 500 );
+		}
+		breadcrumb.innerHTML = breadcrumbs;
+		const spinner = doc.getElementById( 'loading-spinner' );
+		spinner.style.display = "none";
 	}
 }
 
-function navigate ( event ) {
-	console.log( event.target.href );
+/**
+ * Handle navigate event in background
+ *
+ * Set spinner as visible and call {@link swapPage}
+ * with {@link event.target.href} and {@link event}
+ *
+ * @param {event} event - {@a onclick} event
+ */
+const navigate = function ( event ) {
 	if ( event.target.nodeName == 'A' ) {
 		if ( event.target.href.endsWith( '/' ) ) {
 			event.preventDefault();
@@ -87,7 +104,7 @@ function navigate ( event ) {
 	}
 
 	if ( event.defaultPrevented ) {
-		if ( req ) req.abort();
+		abortAll( fetchQueue );
 
 		const spinner = document.getElementById( 'loading-spinner' );
 		spinner.style.display = "";
@@ -95,108 +112,253 @@ function navigate ( event ) {
 	}
 }
 
-function swapPage ( href, event = undefined ) {
-	req = new AbortController();
+/**
+ * Find element by 'id' then connect callback() to 'event'
+ *
+ * @param {string} id - Element ID
+ * @param {string} event - Event name
+ * @param {function} callback - Event Handler
+ */
+const connectEventById = function ( id = undefined, event = undefined, callback = undefined ) {
+	let elem;
+	if ( id && event && callback )
+		elem = document.getElementById( id );
+	if ( elem )
+		addEvent( elem, event, callback );
+}
+
+/**
+ * Return an AbortController
+ *
+ * @returns {AbortController}
+ */
+const fetchTask = function () {
+	let task = new AbortController();
+	fetchQueue.push( task );
+	task.signal.onabort = task => {
+		fetchQueue.pop( fetchQueue.indexOf( task ) );
+	}
+	return task;
+}
+
+/**
+ * Abort all queued task with AbortController collection
+ *
+ * @param {Array} queue - Array containing AbortControllers
+ */
+const abortAll = function ( queue ) {
+	while ( queue.length > 0 ) {
+		queue.at( 0 ).abort()
+	}
+}
+
+/**
+ * Sleep for ms miliseconds then do something
+ * @param {int} ms - Time to sleep in ms
+ */
+function sleep( ms ) {
+	return new Promise( resolve => setTimeout( resolve, ms ) );
+}
+/**
+ * Load 'href' offscreen, build dom from 'href' then replace current dom
+ *
+ * @param {string} href - Requested page
+ * @param {event} [event=undefined] - Event that called this method
+ */
+const swapPage = function ( href, event = undefined ) {
+	let task = fetchTask();
+
 	fetch( href, {
-			signal: req.signal
+			signal: task.signal
 		} )
 		.then( response => response.text() )
 		.then( data => {
-			document.documentElement.innerHTML = data;
-
-			updateCrumbs();
+			// Load the document off-screen
+			let doc = document.implementation.createHTMLDocument();
+			doc.documentElement.innerHTML = data;
 
 			if ( event ) {
-				let title = event.target.innerHTML;
 				let path = event.target.pathname;
 				if ( path.endsWith( "/" ) )
-					window.document.title = "Files: " + decodeURI( path );
+					doc.title = "Files: " + decodeURI( path );
 				else
-					window.document.title = "View: " + decodeURI( path );
+					doc.title = "View: " + decodeURI( path );
 
 				history.pushState( {
-					page: title
-				}, title, href );
+					page: doc.title
+				}, doc.title, href );
+			}
+			updateCrumbs( doc, event ? event.target.pathname : window.location.pathname );
+
+			let searchBox = doc.getElementById( 'searchBox' );
+			if ( searchBox ) {
+				initSearchBox( searchBox, doc );
+				doc.getElementById( 'search' ).value = '';
 			}
 
-			let search_bar = document.getElementById( 'search_bar' );
-			if ( search_bar ) {
-				setup_search_bar( search_bar );
-				document.getElementById( 'search' ).value = '';
-			}
-
-			let list = document.getElementById( 'list' );
-			if ( list ) table_row_link_class( list );
-
-			// scroll to top
-			document.body.scrollTop = 0;
-			document.documentElement.scrollTop = 0;
-			req = undefined;
+			let list = doc.getElementById( 'list' );
+			if ( list ) tableRowSetupClass( list, doc, href, task );
+			return doc.documentElement.innerHTML;
 		} )
-		.catch( err => {
+		.catch( () => {
 			console.log( "Canceled navigation: " + href );
-			console.log( err );
-			req = undefined;
+		} )
+		.finally( ( innerHTML ) => {
+			fetchQueue.pop( fetchQueue.indexOf( task ) );
+		} )
+		.then( innerHTML => {
+			if ( !task.signal.aborted ) {
+				// Render the document
+				document.documentElement.innerHTML = innerHTML;
+				// Connect events
+				connectEventById( 'search', 'keyup', searchFile );
+				connectEventById( 'breadcrumbs', 'click', navigate );
+				connectEventById( 'list', 'click', navigate );
+				connectEventById( 'searchForm', 'submit', event => {
+					event.preventDefault();
+				} );
+				// scroll to top
+				document.body.scrollTop = 0;
+				document.documentElement.scrollTop = 0;
+			}
 		} );
 }
 
-function table_row_link_class ( list ) {
+/**
+ * Set style class for table rows and remove rows specified in '.hidden'
+ *
+ * @param {HTMLElement} list - An html table
+ * @param {document} [doc=document] - HTMLDocument to work on
+ * @param {string} [href=location.href] - Url to fetch '.hidden' from
+ * @param {AbortController} r - Abort this task
+ */
+const tableRowSetupClass = function ( list, doc, href, task ) {
+	doc = doc || document;
+	href = href || location.href;
+
+	// Set table class
 	list.className = 'table table-hover table-dark';
-	let headers = document.getElementsByTagName( 'th' );
+	let headers = doc.getElementsByTagName( 'th' );
 	let i;
 	for ( i = 0; i < headers.length; i++ ) {
 		headers[ i ].scope = "col";
 	}
+
 	let files = list.getElementsByTagName( 'tbody' )[ 0 ].getElementsByTagName( 'a' );
-	for ( i = 0; i < files.length; i++ ) {
-		if ( "classList" in files[ i ] ) files[ i ].classList.add( "text-info" );
-		else {
-			files[ i ].className = files[ i ].className.split( " " ).concat( "text-info" ).join( " " );
-		}
-	}
-	addEvent( list, 'click', navigate );
+
+	// Delete rows specified in '.hidden'
+	fetch( href + '.hidden', {
+			signal: task.signal
+		} )
+		.then( response => {
+			if ( !response.ok ) {
+				throw new Error( 'Fetch failed' );
+			}
+			return response.text()
+		} )
+		.then(
+			data =>
+			data.trim()
+			.split( /\r?\n/ )
+			.filter(
+				str => str.trim().length > 0
+			)
+		)
+		.then( hidden => {
+			Array.from( files )
+				.forEach( file => {
+					if ( hidden.includes( file.title ) ) {
+						file.parentElement
+							.parentElement
+							.parentElement
+							.removeChild(
+								file.parentElement
+								.parentElement
+							)
+					}
+				} );
+		} )
+		.catch( () => {
+			undefined;
+		} );
+	Array.from( files )
+		.forEach(
+			file => {
+				if ( "classList" in file ) file.classList.add( "text-info" );
+				else {
+					file.className = file.className.split( " " ).concat( "text-info" ).join( " " );
+				}
+			}
+		)
 }
 
-function setup_search_bar ( elem ) {
-	let form = document.createElement( 'form' );
-	let input = document.createElement( 'input' );
+
+/**
+ * Filter File list by name
+ *
+ * @callback searchFile
+ */
+const searchFile = function () {
+	let i,
+		e = "^(?=.*\\b" + this.value.trim().split( /\s+/ ).join( "\\b)(?=.*\\b" ) + ").*$",
+		n = RegExp( e, "i" );
+	Array.prototype.filter.call(
+		document.querySelectorAll( '#list tbody tr' ),
+		function ( item ) {
+			item.removeAttribute( 'hidden' )
+			i = item.querySelector( 'td' ).textContent.replace( /\s+/g, " " );
+			return !n.test( i );
+		}
+	).forEach( function ( item ) {
+		item.hidden = true;
+	} );
+}
+
+/**
+ * Initialize the search box
+ *
+ * @param {HTMLElement} elem - HTMLElement to create Search Box on.
+ * @param {HTMLDocument} [doc=document] - HTMLDocument that contains {@link initSearchBox#elem}
+ */
+const initSearchBox = function ( elem, doc = document ) {
+
+	let form = doc.createElement( 'form' );
+	let input = doc.createElement( 'input' );
+
 	form.className = 'form';
-	form.setAttribute( 'onsubmit', "event.preventDefault();" );
+	form.id = 'searchForm';
+
 	input.name = 'filter';
 	input.id = 'search';
 	input.style = 'border-bottom-right-radius: 0; border-bottom-left-radius: 0;';
 	input.placeholder = 'Type to search...';
 	input.className = 'form-control text-light bg-dark';
+
 	form.appendChild( input );
 	elem.appendChild( form );
-	addEvent( input, 'keyup', function () {
-		let i,
-			e = "^(?=.*\\b" + this.value.trim().split( /\s+/ ).join( "\\b)(?=.*\\b" ) + ").*$",
-			n = RegExp( e, "i" );
-		Array.prototype.filter.call(
-			document.querySelectorAll( '#list tbody tr' ),
-			function ( item ) {
-				item.removeAttribute( 'hidden' )
-				i = item.querySelector( 'td' ).textContent.replace( /\s+/g, " " );
-				return !n.test( i );
-			}
-		).forEach( function ( item ) {
-			item.hidden = true;
-		} );
-	} );
 }
 
 addEvent( window, 'popstate', e => {
-	swapPage( window.location.pathname );
+	abortAll( fetchQueue );
+	const spinner = document.getElementById( 'loading-spinner' );
+
+	spinner.style.display = "";
+	swapPage( e.target.location.href );
 } );
 
-addEvent( window, 'DOMContentLoaded', e => {
-
+addEvent( window, 'DOMContentLoaded', () => {
 	updateCrumbs();
 
 	let list = document.getElementById( 'list' );
-	if ( list ) table_row_link_class( list );
+	if ( list ) tableRowSetupClass( list, undefined, undefined, fetchTask() );
 
-	let search_bar = document.getElementById( 'search_bar' );
-	if ( search_bar ) setup_search_bar( search_bar );
+	let searchBox = document.getElementById( 'searchBox' );
+	if ( searchBox ) initSearchBox( searchBox );
+
+	connectEventById( 'search', 'keyup', searchFile );
+	connectEventById( 'breadcrumbs', 'click', navigate );
+	connectEventById( 'list', 'click', navigate );
+	connectEventById( 'searchForm', 'submit', event => {
+		event.preventDefault();
+	} );
 } );
