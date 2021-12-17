@@ -1,22 +1,23 @@
 local args, err = ngx.req.get_uri_args();
 local url = ngx.var.scheme .. "://" .. ngx.var.host .. "/cow";
+
 local set_args = function(eye, tongue, mode, cow)
 	local cow_args = "";
 	if not_nil(cow) then
 		if cow == "random" then
 			cow_args = cow_args .. " -f " .. "/usr/share/cows/" .. termcow.cows[math.random(1,table.getn(termcow.cows))] .. ".cow";
 		elseif indexOf(termcow.cows, cow) then
-			cow_args = cow_args .. " -f " .. "/usr/share/cows/" .. cow .. ".cow";
+			cow_args = cow_args .. " -f " .. "/usr/share/cows/" .. sans(cow) .. ".cow";
 		else
 			args_error(args, "cow");
 		end
 	end;
 	if is_nil(mode) then
 		if not_nil(tongue) then
-			cow_args =  cow_args .. " -T " .. tongue;
+			cow_args =  cow_args .. " -T " .. sans(tongue);
 		end;
 		if not_nil(eye) then
-			cow_args =  cow_args .. " -e " .. eye;
+			cow_args =  cow_args .. " -e " .. sans(eye);
 		end;
 	else
 		if mode == "" then
@@ -51,11 +52,10 @@ else
 	cmd = (
 		"cow" .. (ngx.var[1] == "random" and termcow.op[math.random(1,2)] or ngx.var[1] ) ..
 		set_args(args["eye"], args["tongue"], args["mode"], args["cow"]) ..
-		" -W " .. (args["col"] or "22") ..
-		" " ..
-		( args["msg"] or "moo")
+		" -W " .. (sans(args["col"]) or "22")
 	);
-	local handle = io.popen(cmd);
-	ngx.say(handle:read("*a"));
+	local handle = io.popen("env printf '" .. ( sans(args["msg"]) or "moo") .."\n'|".. cmd);
+	speech = handle:read("*a")
+	ngx.say(speech);
 	handle:close();
 end

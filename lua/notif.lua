@@ -1,9 +1,13 @@
 local args, err = ngx.req.get_uri_args();
+local function wrap(txt)
+	return "$(env printf '" .. txt .. "')"
+end
+
 if not_nil(args["title"]) then
 	cmd = (
 		'dbus-send --system / net.nuetzlich.SystemNotifications.Notify ' ..
-		'\'string:' .. args["title"] .. " from " .. ngx.var.remote_addr .. '\' ' ..
-		(not_nil(args["text"]) and '\'string:' .. args["text"] .. '\'' or '')
+		'"string:' .. wrap(sans(args["title"])) .. " from " .. ngx.var.remote_addr .. '" ' ..
+		(not_nil(args["text"]) and '"string:' .. wrap(sans(args["text"])) .. '"' or '')
 	);
 	os.execute(cmd);
 	ngx.say("Notified: ");

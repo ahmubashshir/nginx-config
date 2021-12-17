@@ -36,3 +36,13 @@ function args_error(args, key, msg)
     ngx.say("Reference ".. ngx.var.scheme .. "://" .. ngx.var.host .. ngx.var.uri .. "?help");
     ngx.exit(406);
 end;
+
+function sans(str)
+  -- sanitize string for io.popen()
+  -- @bdeshi reported this RCE.
+	if str then
+        -- escape using urlencode then replace % with backslashed hex
+		return ngx.escape_uri(str):gsub("'", "%%27"):gsub("%%", "\\x")
+	end
+	return nil
+end
