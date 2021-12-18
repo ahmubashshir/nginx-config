@@ -1,6 +1,7 @@
 local args, err = ngx.req.get_uri_args();
+local uri, scheme, host = ngx.var.uri, ngx.var.scheme, ngx.var.host
 function this()
-	local url = ngx.var.scheme .. "://" .. ngx.var.host .. "/cow";
+	local url = scheme .. "://" .. host .. "/cow";
 	ngx.say( url .. "/say" .. " usage:");
 	ngx.say("  GET " .. url .. "/say");
 	ngx.say("  GET " .. url .. "/say" .. "?[args]");
@@ -40,10 +41,14 @@ function this()
 			prevlen = line:len();
 		end;
 	end;
+	ngx.say("")
+	ngx.say("")
+	ngx.say("PS. you can put msg in POST body, eg.:")
+	ngx.say("  fortune|POST " .. url .. "/say");
 end
-if ngx.var.uri == '/cow' or ngx.var.uri == '/cow/' then
+if uri == '/cow' or uri == '/cow/' then
 	this()
-elseif ngx.var.uri == '/cow/say' or ngx.var.uri == '/cow/think' or ngx.var.uri == '/cow/think' then
+elseif uri == '/cow/say' or uri == '/cow/think' or uri == '/cow/random' then
 	return this
 else
 	ngx.exit(404);
