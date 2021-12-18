@@ -49,6 +49,13 @@ end;
 if args["help"] ~= nil then
 	require('cowhelp')()
 else
+	if ngx.req.get_method() == "POST" then
+		ngx.req.read_body()
+		args["msg"] = ngx.req.get_body_data()
+		if args["msg"] == nil then
+			local file = ngx.req.get_body_file()
+		end
+	end
 	cmd = (
 		"cow" .. (ngx.var[1] == "random" and termcow.op[math.random(1,2)] or ngx.var[1] ) ..
 		set_args(args["eye"], args["tongue"], args["mode"], args["cow"]) ..
